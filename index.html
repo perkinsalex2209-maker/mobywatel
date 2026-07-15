@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mObywatel</title>
+    <style>
+        body { background-color: #f3f4f6; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .phone { width: 360px; height: 640px; background: white; border-radius: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); overflow: hidden; position: relative; border: 8px solid #333; }
+        .header { background: #003399; color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 20px; }
+        .card { margin: 20px; padding: 15px; background: linear-gradient(135deg, #e6f0fa 0%, #ffffff 100%); border-radius: 15px; border: 1px solid #ccc; position: relative; }
+        .flag { width: 40px; height: 25px; background: red; position: relative; }
+        .flag::before { content: ""; position: absolute; width: 40px; height: 12.5px; background: white; }
+        .photo { width: 100px; height: 130px; background: #ddd; border: 2px solid #003399; margin-top: 15px; display: flex; justify-content: center; align-items: center; color: #666; font-size: 12px; text-align: center; }
+        .info { margin-top: 15px; }
+        .label { font-size: 10px; color: #666; text-transform: uppercase; margin-top: 5px; }
+        .value { font-size: 16px; font-weight: bold; color: #111; }
+        .hologram { position: absolute; bottom: 15px; right: 15px; width: 50px; height: 50px; background: linear-gradient(45deg, gold, lime, cyan, magenta); border-radius: 50%; opacity: 0.7; animation: shine 2s infinite alternate; }
+        @keyframes shine { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="phone">
+        <div class="header">mObywatel</div>
+        <div class="card">
+            <div class="flag"></div>
+            <div style="display: flex; gap: 15px;">
+                <div class="photo">PHOTO GOES HERE</div>
+                <div class="info">
+                    <div class="label">Last name</div>
+                    <div class="value">KOWALSKI</div>
+                    <div class="label">First name</div>
+                    <div class="value">JAN</div>
+                    <div class="label">Citizenship</div>
+                    <div class="value">POLISH</div>
+                </div>
+            </div>
+            <div class="hologram"></div>
+        </div>
+    </div>
+</body>
+</html>
