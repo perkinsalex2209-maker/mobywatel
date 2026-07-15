@@ -1,42 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mObywatel</title>
+    <title>mDowód</title>
     <style>
-        body { background-color: #f3f4f6; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .phone { width: 360px; height: 640px; background: white; border-radius: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); overflow: hidden; position: relative; border: 8px solid #333; }
-        .header { background: #003399; color: white; padding: 20px; text-align: center; font-weight: bold; font-size: 20px; }
-        .card { margin: 20px; padding: 15px; background: linear-gradient(135deg, #e6f0fa 0%, #ffffff 100%); border-radius: 15px; border: 1px solid #ccc; position: relative; }
-        .flag { width: 40px; height: 25px; background: red; position: relative; }
-        .flag::before { content: ""; position: absolute; width: 40px; height: 12.5px; background: white; }
-        .photo { width: 100px; height: 130px; background: #ddd; border: 2px solid #003399; margin-top: 15px; display: flex; justify-content: center; align-items: center; color: #666; font-size: 12px; text-align: center; }
-        .info { margin-top: 15px; }
-        .label { font-size: 10px; color: #666; text-transform: uppercase; margin-top: 5px; }
-        .value { font-size: 16px; font-weight: bold; color: #111; }
-        .hologram { position: absolute; bottom: 15px; right: 15px; width: 50px; height: 50px; background: linear-gradient(45deg, gold, lime, cyan, magenta); border-radius: 50%; opacity: 0.7; animation: shine 2s infinite alternate; }
-        @keyframes shine { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
+        body { background-color: #121212; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
+        
+        /* Mobile Frame Simulator */
+        .phone-mock { width: 375px; height: 812px; background: #f3f6fa; border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); overflow-y: auto; position: relative; border: 10px solid #2d2d2d; padding-bottom: 30px; }
+        
+        /* Navigation Header */
+        .app-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px 5px 20px; background: #f3f6fa; }
+        .back-arrow { font-size: 24px; cursor: pointer; color: #1c1c1e; width: 30px; }
+        .app-title { font-size: 18px; font-weight: 600; color: #1c1c1e; text-align: center; }
+        .help-icon { font-size: 22px; color: #1c1c1e; width: 30px; text-align: right; cursor: pointer; }
+        
+        /* Live Dynamic Time Clock Stamp */
+        .live-timer { text-align: center; font-size: 11px; color: #5f6368; font-weight: 500; margin-bottom: 12px; letter-spacing: 0.3px; }
+        
+        /* Main Container Elements wrapper */
+        .content-box { padding: 0 16px; }
+
+        /* Information Slider Box Blue Alert */
+        .info-alert-card { background-color: #e8f1fc; border-radius: 16px; padding: 16px 20px; margin-bottom: 16px; display: flex; gap: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+        .info-icon { font-size: 18px; background: #0052cc; color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; font-family: serif; }
+        .info-text-wrapper { display: flex; flex-direction: column; gap: 6px; }
+        .info-title { font-size: 14px; font-weight: 700; color: #002d72; }
+        .info-body { font-size: 12.5px; color: #334e68; line-height: 1.45; font-weight: 400; }
+        .slider-dots { display: flex; justify-content: center; gap: 6px; margin-top: 10px; margin-bottom: 4px; }
+        .dot { width: 6px; height: 6px; background: #cbd5e1; border-radius: 50%; }
+        .dot.active { background: #0052cc; width: 12px; border-radius: 3px; }
+
+        /* EXACT mDowód Document Design card view */
+        .m-card { background: #e2f0fd url('https://wikimedia.org') bottom -20px right -30px no-repeat; background-size: 260px; border-radius: 20px; padding: 22px 20px; box-shadow: 0 4px 20px rgba(0, 51, 153, 0.05); position: relative; border: 1px solid rgba(255,255,255,0.7); overflow: hidden; }
+        
+        /* Guilloche wave pattern graphic layer simulation */
+        .m-card::before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(203,224,245,0.2) 100%); pointer-events: none; }
+        
+        /* Layout Structure Grid splits */
+        .card-main-grid { display: flex; gap: 16px; position: relative; z-index: 2; }
+        
+        /* Black and white user profile photo space framework */
+        .user-photo { width: 125px; height: 162px; background: #e2e8f0; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.05); filter: grayscale(100%) contrast(110%); }
+        .user-photo img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Alternative default picture setup container if image missing */
+        .photo-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #cbd5e1; color: #64748b; }
+
+        /* Metadata information label lines wrapper */
+        .user-details { flex-grow: 1; display: flex; flex-direction: column; gap: 8px; }
+        .info-row { display: flex; flex-direction: column; }
+        .lbl { font-size: 10px; color: #5f6368; font-weight: 500; margin-bottom: 1px; }
+        .val { font-size: 14px; font-weight: 700; color: #1c1c1e; text-transform: uppercase; letter-spacing: 0.2px; }
+        .val.primary-name { font-size: 15px; color: #000000; }
+
+        /* Card Bottom Metadata display rulesets */
+        .card-footer-grid { margin-top: 10px; position: relative; z-index: 2; }
+        .national-flag-seal { width: 44px; height: 26px; background: #fff; border-bottom: 13px solid #dc2626; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 8px; border-radius: 1px; }
+        .rp-text-stamp { font-size: 9px; font-weight: 700; color: #a0aec0; text-transform: uppercase; line-height: 1.1; margin-bottom: 12px; letter-spacing: 0.3px; }
+
+        /* Green Verified Badge Document Row Status element */
+        .verified-document-banner { background-color: white; border-radius: 16px; padding: 16px 20px; margin-top: 14px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); border: 1px solid #eaeaea; }
+        .check-circle { width: 24px; height: 24px; border: 2px solid #558b2f; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #558b2f; font-weight: bold; font-size: 13px; }
+        .status-text-confirm { font-size: 14px; font-weight: 600; color: #43a047; }
+        
+        /* Action Button list element blocks layouts */
+        .bottom-action-container { margin-top: 14px; }
+        .btn-action-row { background: white; border-radius: 18px; padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.02); border: 1px solid #eaeaea; cursor: pointer; }
+        .btn-left-content { display: flex; align-items: center; gap: 16px; }
+        .icon-action-graphic { width: 22px; height: 22px; border: 2px dashed #0052cc; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #0052cc; font-weight: bold; font-size: 11px; }
+        .label-action-click { font-size: 14px; font-weight: 600; color: #1c1c1e; }
+        .arrow-right-chevron { font-size: 18px; color: #1c1c1e; font-weight: 600; }
     </style>
 </head>
 <body>
-    <div class="phone">
-        <div class="header">mObywatel</div>
-        <div class="card">
-            <div class="flag"></div>
-            <div style="display: flex; gap: 15px;">
-                <div class="photo">PHOTO GOES HERE</div>
-                <div class="info">
-                    <div class="label">Last name</div>
-                    <div class="value">KOWALSKI</div>
-                    <div class="label">First name</div>
-                    <div class="value">JAN</div>
-                    <div class="label">Citizenship</div>
-                    <div class="value">POLISH</div>
+
+    <div class="phone-mock">
+        
+        <!-- App Top bar layout navigation framework items -->
+        <div class="app-header">
+            <span class="back-arrow">←</span>
+            <div class="app-title">mDowód</div>
+            <span class="help-icon">?</span>
+        </div>
+        
+        <!-- Dynamic Clock element container -->
+        <div class="live-timer" id="liveClockStamp">Czas: 00:00:00 01.01.2026</div>
+        
+        <div class="content-box">
+            
+            <!-- Warning Banner Top layout component -->
+            <div class="info-alert-card">
+                <div class="info-icon">i</div>
+                <div class="info-text-wrapper">
+                    <div class="info-title">Kiedy nie skorzystasz z mDowodu</div>
+                    <div class="info-body">Gdy załatwiasz sprawę w banku (do 31 sierpnia), wyjeżdżasz za granicę i składasz wniosek o dowód osobisty.</div>
+                    <div class="slider-dots">
+                        <div class="dot active"></div>
+                        <div class="dot"></div>
+                    </div>
                 </div>
             </div>
-            <div class="hologram"></div>
-        </div>
-    </div>
-</body>
-</html>
+            
+            
+            <div class="m-card">
+                <div class="card-main-grid">
+                    
+                    <!-- Profile image display card object -->
+                    <div class="user-photo">
+                        <!-- Pro Tip: Replace this URL below with your real hosted img address to load your own portrait photograph file directly -->
+                        
+                        <div class="photo-placeholder" id="photoFallback" style="display:none;">
+                            👤
+                        </div>
+                    </div>
+                    
+                    <!-- Information field column groups blocks -->
+                    <div class="user-details">
+                        <div class="info-row">
+                            <span class="lbl">Imię (imiona)</span>
+                            <span class="val primary-name">Aleksander</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="lbl">Nazwisko</span>
+                            <span class="val primary-name">Czarniecki</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="lbl">Obywatelstwo</span>
+                            <span class="val">POLSKIE</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="lbl">Data urodzenia</span>
+                            <span class="val">22.09.2006</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="lbl">Numer PESEL</span>
+                            <span class="val">06292202957</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bottom area flag stamp labels components -->
+                <div class="card-footer-grid">
+                    <div class="national-flag-seal"></div>
+                    <div class="rp-text-stamp">Rzeczpospolita<br>Polska</div>
+                </div>
+            </div>
+            
