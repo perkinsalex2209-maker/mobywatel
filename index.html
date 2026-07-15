@@ -2,150 +2,131 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mDowód</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>mObywatel 2.0</title>
+    <!-- Web App Configurations to hide mobile browser bars -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <style>
-        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-        body { background-color: #121212; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+        body { background-color: #f3f6fa; min-height: 100vh; width: 100vw; overflow-x: hidden; display: flex; flex-direction: column; padding-bottom: env(safe-area-inset-bottom); }
         
-        /* Mobile Frame Simulator */
-        .phone-mock { width: 375px; height: 812px; background: #f3f6fa; border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); overflow-y: auto; position: relative; border: 10px solid #2d2d2d; padding-bottom: 30px; }
-        
-        /* Navigation Header */
-        .app-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px 5px 20px; background: #f3f6fa; }
-        .back-arrow { font-size: 24px; cursor: pointer; color: #1c1c1e; width: 30px; }
-        .app-title { font-size: 18px; font-weight: 600; color: #1c1c1e; text-align: center; }
-        .help-icon { font-size: 22px; color: #1c1c1e; width: 30px; text-align: right; cursor: pointer; }
+        /* Fixed Real App Top Navigation Header */
+        .app-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 8px 20px; background: #f3f6fa; position: sticky; top: 0; z-index: 10; }
+        .back-arrow { font-size: 24px; cursor: pointer; color: #1c1c1e; width: 30px; font-weight: bold; }
+        .app-title { font-size: 19px; font-weight: 700; color: #1c1c1e; letter-spacing: -0.2px; text-align: center; }
+        .help-icon { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border: 1.5px solid #1c1c1e; border-radius: 50%; font-size: 14px; font-weight: 700; color: #1c1c1e; cursor: pointer; }
         
         /* Live Dynamic Time Clock Stamp */
-        .live-timer { text-align: center; font-size: 11px; color: #5f6368; font-weight: 500; margin-bottom: 12px; letter-spacing: 0.3px; }
+        .live-timer { text-align: center; font-size: 11.5px; color: #5f6368; font-weight: 500; margin-bottom: 16px; letter-spacing: 0.1px; }
         
-        /* Main Container Elements wrapper */
-        .content-box { padding: 0 16px; }
+        /* Main Container Elements Wrapper */
+        .content-box { padding: 0 16px 40px 16px; display: flex; flex-direction: column; gap: 14px; }
 
         /* Information Slider Box Blue Alert */
-        .info-alert-card { background-color: #e8f1fc; border-radius: 16px; padding: 16px 20px; margin-bottom: 16px; display: flex; gap: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
-        .info-icon { font-size: 18px; background: #0052cc; color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; font-family: serif; }
-        .info-text-wrapper { display: flex; flex-direction: column; gap: 6px; }
+        .info-alert-card { background-color: #e8f1fc; border-radius: 20px; padding: 18px 20px; display: flex; gap: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.01); position: relative; }
+        .info-icon { font-size: 13px; background: #0052cc; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: 900; flex-shrink: 0; }
+        .info-text-wrapper { display: flex; flex-direction: column; gap: 4px; flex: 1; }
         .info-title { font-size: 14px; font-weight: 700; color: #002d72; }
-        .info-body { font-size: 12.5px; color: #334e68; line-height: 1.45; font-weight: 400; }
-        .slider-dots { display: flex; justify-content: center; gap: 6px; margin-top: 10px; margin-bottom: 4px; }
+        .info-body { font-size: 13px; color: #2c3e50; line-height: 1.45; font-weight: 400; }
+        .slider-dots { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }
         .dot { width: 6px; height: 6px; background: #cbd5e1; border-radius: 50%; }
-        .dot.active { background: #0052cc; width: 12px; border-radius: 3px; }
+        .dot.active { background: #0052cc; width: 14px; border-radius: 3px; }
 
-        /* EXACT mDowód Document Design card view */
-        .m-card { background: #e2f0fd url('https://wikimedia.org') bottom -20px right -30px no-repeat; background-size: 260px; border-radius: 20px; padding: 22px 20px; box-shadow: 0 4px 20px rgba(0, 51, 153, 0.05); position: relative; border: 1px solid rgba(255,255,255,0.7); overflow: hidden; }
+        /* Official mDowód Document Design Card view */
+        .m-card { background: #e3effa url('https://wikimedia.org') bottom -45px right -45px no-repeat; background-size: 320px; border-radius: 24px; padding: 24px 20px; box-shadow: 0 4px 24px rgba(0, 51, 153, 0.04); position: relative; border: 1px solid rgba(255,255,255,0.8); overflow: hidden; }
         
-        /* Guilloche wave pattern graphic layer simulation */
-        .m-card::before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(203,224,245,0.2) 100%); pointer-events: none; }
+        /* Layout Structure Grid Splits */
+        .card-main-grid { display: flex; gap: 20px; position: relative; z-index: 2; align-items: flex-start; }
         
-        /* Layout Structure Grid splits */
-        .card-main-grid { display: flex; gap: 16px; position: relative; z-index: 2; }
+        /* Profile Image Container Layout with Flag Overlay hook */
+        .photo-container { position: relative; width: 128px; height: 166px; flex-shrink: 0; }
         
-        /* Black and white user profile photo space framework */
-        .user-photo { width: 125px; height: 162px; background: #e2e8f0; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.05); filter: grayscale(100%) contrast(110%); }
+        /* Sharp Black and White User Photo Setup */
+        .user-photo { width: 100%; height: 100%; background: #e2e8f0; border-radius: 16px; overflow: hidden; border: 1px solid rgba(0,0,0,0.04); filter: grayscale(100%) contrast(108%); box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
         .user-photo img { width: 100%; height: 100%; object-fit: cover; }
-        
-        /* Alternative default picture setup container if image missing */
-        .photo-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #cbd5e1; color: #64748b; }
 
-        /* Metadata information label lines wrapper */
-        .user-details { flex-grow: 1; display: flex; flex-direction: column; gap: 8px; }
+        /* REALISTIC MOVING POLAND FLAG HOLOGRAM */
+        .moving-flag-hologram { position: absolute; bottom: -8px; left: 12px; width: 44px; height: 26px; background: linear-gradient(to bottom, #ffffff 50%, #dc2626 50%); border-radius: 3px; box-shadow: 0 3px 8px rgba(0,0,0,0.2); overflow: hidden; animation: waveMotion 1.8s infinite ease-in-out alternate; transform-origin: left center; z-index: 4; }
+        .moving-flag-hologram::before { content: ""; position: absolute; top: 0; left: -100%; width: 300%; height: 100%; background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%); animation: flagShine 2.5s infinite linear; }
+        
+        @keyframes waveMotion {
+            0% { transform: translateY(0) skewY(-2deg) scaleY(0.98); }
+            100% { transform: translateY(-3px) skewY(3deg) scaleY(1.02); }
+        }
+        @keyframes flagShine {
+            0% { left: -150%; }
+            100% { left: 150%; }
+        }
+
+        /* OFFICIAL IRIDESCENT EAGLE EMBLEM HOLOGRAM */
+        .eagle-hologram-seal { position: absolute; bottom: 45px; right: 25px; width: 50px; height: 55px; background: url('https://wikimedia.org') no-repeat center; background-size: contain; opacity: 0.55; mix-blend-mode: color-burn; filter: drop-shadow(0 0 2px rgba(255,255,255,0.8)); animation: hologramGlow 4s infinite linear; z-index: 3; pointer-events: none; }
+        
+        @keyframes hologramGlow {
+            0% { filter: hue-rotate(0deg) saturate(1.5) brightness(1); transform: scale(1) rotate(0deg); }
+            50% { filter: hue-rotate(180deg) saturate(2.5) brightness(1.2); transform: scale(1.04) rotate(3deg); }
+            100% { filter: hue-rotate(360deg) saturate(1.5) brightness(1); transform: scale(1) rotate(0deg); }
+        }
+
+        /* Data Fields Column */
+        .user-details { flex-grow: 1; display: flex; flex-direction: column; gap: 10px; padding-top: 2px; }
         .info-row { display: flex; flex-direction: column; }
-        .lbl { font-size: 10px; color: #5f6368; font-weight: 500; margin-bottom: 1px; }
-        .val { font-size: 14px; font-weight: 700; color: #1c1c1e; text-transform: uppercase; letter-spacing: 0.2px; }
-        .val.primary-name { font-size: 15px; color: #000000; }
+        .lbl { font-size: 11px; color: #72727a; font-weight: 500; margin-bottom: 1px; }
+        .val { font-size: 14.5px; font-weight: 700; color: #1c1c1e; }
+        .val.primary-name { font-size: 16px; color: #000000; font-weight: 700; letter-spacing: -0.1px; }
 
-        /* Card Bottom Metadata display rulesets */
-        .card-footer-grid { margin-top: 10px; position: relative; z-index: 2; }
-        .national-flag-seal { width: 44px; height: 26px; background: #fff; border-bottom: 13px solid #dc2626; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 8px; border-radius: 1px; }
-        .rp-text-stamp { font-size: 9px; font-weight: 700; color: #a0aec0; text-transform: uppercase; line-height: 1.1; margin-bottom: 12px; letter-spacing: 0.3px; }
+        /* Card Bottom Metadata Labels Area */
+        .card-footer-grid { margin-top: 20px; position: relative; z-index: 2; display: flex; flex-direction: column; gap: 4px; width: fit-content; }
+        .rp-text-stamp { font-size: 9.5px; font-weight: 800; color: #8e8e93; text-transform: uppercase; line-height: 1.15; letter-spacing: 0.1px; }
 
-        /* Green Verified Badge Document Row Status element */
-        .verified-document-banner { background-color: white; border-radius: 16px; padding: 16px 20px; margin-top: 14px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); border: 1px solid #eaeaea; }
-        .check-circle { width: 24px; height: 24px; border: 2px solid #558b2f; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #558b2f; font-weight: bold; font-size: 13px; }
-        .status-text-confirm { font-size: 14px; font-weight: 600; color: #43a047; }
+        /* Green Verified Badge Status Bar Container */
+        .verified-document-banner { background-color: white; border-radius: 20px; padding: 18px 22px; display: flex; align-items: center; gap: 14px; box-shadow: 0 2px 10px rgba(0,0,0,0.01); border: 1px solid #e5e5ea; }
+        .check-circle { width: 24px; height: 24px; border: 2.5px solid #4f7e2b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #4f7e2b; font-weight: 700; font-size: 13px; background: #f1f8e9; }
+        .status-text-confirm { font-size: 15px; font-weight: 600; color: #4f7e2b; letter-spacing: -0.1px; }
         
-        /* Action Button list element blocks layouts */
-        .bottom-action-container { margin-top: 14px; }
-        .btn-action-row { background: white; border-radius: 18px; padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.02); border: 1px solid #eaeaea; cursor: pointer; }
+        /* Action Interactive Layout Buttons list rows */
+        .bottom-action-container { display: flex; flex-direction: column; gap: 12px; }
+        .btn-action-row { background: white; border-radius: 22px; padding: 20px 22px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.01); border: 1px solid #e5e5ea; cursor: pointer; transition: background 0.15s; }
+        .btn-action-row:active { background: #f2f2f7; }
         .btn-left-content { display: flex; align-items: center; gap: 16px; }
-        .icon-action-graphic { width: 22px; height: 22px; border: 2px dashed #0052cc; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #0052cc; font-weight: bold; font-size: 11px; }
-        .label-action-click { font-size: 14px; font-weight: 600; color: #1c1c1e; }
-        .arrow-right-chevron { font-size: 18px; color: #1c1c1e; font-weight: 600; }
+        
+        /* Realistic Blue Check Framework Action Graphic Icon */
+        .icon-action-graphic { width: 26px; height: 22px; border: 2px solid #0052cc; border-radius: 7px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2px; position: relative; }
+        .icon-action-graphic::before { content: "✓"; color: #0052cc; font-size: 11px; font-weight: 900; position: absolute; top: 0px; }
+        .icon-action-graphic::after { content: ""; width: 11px; height: 2px; background: #0052cc; position: absolute; bottom: 3px; }
+        
+        .label-action-click { font-size: 15.5px; font-weight: 600; color: #1c1c1e; letter-spacing: -0.1px; }
+        .arrow-right-chevron { font-size: 22px; color: #c7c7cc; font-weight: 300; }
     </style>
 </head>
 <body>
 
-    <div class="phone-mock">
+    <!-- App Top Navigation menu -->
+    <div class="app-header" onclick="triggerAlert('Menu nawigacji')">
+        <span class="back-arrow">←</span>
+        <div class="app-title">mDowód</div>
+        <div class="help-icon">?</div>
+    </div>
+    
+    <!-- Real-time Automatic Counter Clock -->
+    <div class="live-timer" id="liveClockStamp">Czas: 00:00:00 01.01.2026</div>
+    
+    <div class="content-box">
         
-        <!-- App Top bar layout navigation framework items -->
-        <div class="app-header">
-            <span class="back-arrow">←</span>
-            <div class="app-title">mDowód</div>
-            <span class="help-icon">?</span>
+        <!-- Interactive Information Card Element -->
+        <div class="info-alert-card" onclick="triggerAlert('Komunikat informacyjny: mDowód nie zastępuje tradycyjnego paszportu przy przekraczaniu granicy strefy Schengen.')">
+            <div class="info-icon">i</div>
+            <div class="info-text-wrapper">
+                <div class="info-title">Kiedy nie skorzystasz z mDowodu</div>
+                <div class="info-body">Gdy załatwiasz sprawę w banku (do 31 sierpnia), wyjeżdżasz za granicę i składasz wniosek o dowód osobisty.</div>
+                <div class="slider-dots">
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
         </div>
         
-        <!-- Dynamic Clock element container -->
-        <div class="live-timer" id="liveClockStamp">Czas: 00:00:00 01.01.2026</div>
         
-        <div class="content-box">
-            
-            <!-- Warning Banner Top layout component -->
-            <div class="info-alert-card">
-                <div class="info-icon">i</div>
-                <div class="info-text-wrapper">
-                    <div class="info-title">Kiedy nie skorzystasz z mDowodu</div>
-                    <div class="info-body">Gdy załatwiasz sprawę w banku (do 31 sierpnia), wyjeżdżasz za granicę i składasz wniosek o dowód osobisty.</div>
-                    <div class="slider-dots">
-                        <div class="dot active"></div>
-                        <div class="dot"></div>
-                    </div>
-                </div>
-            </div>
-            
-            
-            <div class="m-card">
-                <div class="card-main-grid">
-                    
-                    <!-- Profile image display card object -->
-                    <div class="user-photo">
-                        <!-- Pro Tip: Replace this URL below with your real hosted img address to load your own portrait photograph file directly -->
-                        
-                        <div class="photo-placeholder" id="photoFallback" style="display:none;">
-                            👤
-                        </div>
-                    </div>
-                    
-                    <!-- Information field column groups blocks -->
-                    <div class="user-details">
-                        <div class="info-row">
-                            <span class="lbl">Imię (imiona)</span>
-                            <span class="val primary-name">Aleksander</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="lbl">Nazwisko</span>
-                            <span class="val primary-name">Czarniecki</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="lbl">Obywatelstwo</span>
-                            <span class="val">POLSKIE</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="lbl">Data urodzenia</span>
-                            <span class="val">22.09.2006</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="lbl">Numer PESEL</span>
-                            <span class="val">06292202957</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Bottom area flag stamp labels components -->
-                <div class="card-footer-grid">
-                    <div class="national-flag-seal"></div>
-                    <div class="rp-text-stamp">Rzeczpospolita<br>Polska</div>
-                </div>
-            </div>
+        <div class="m-card" onclick="triggerAlert('Szczegóły zabezpieczeń kryptograficznych dokumentu: Status Certyfikatu AKTUALNY.')">
+
             
